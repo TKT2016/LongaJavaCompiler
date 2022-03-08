@@ -6,17 +6,21 @@ import tools.io.FileUtil;
 import java.io.File;
 
 public class MainTest {
-    static  final   String ext =".lga";
+    static  final   String ext =".jf";
 
     public static void main(String[] args)
     {
-        testone("SQLDomainTest");
+       // testone("SQLDomainTest");
         //testone("GUIDSLTest");
+        //testone("purej/TestStringBuilder");
+       // testone("purej/TestWhile");
+       // testone("purej/TestIf");
+        testone("purej/TestFor");
+        //testone("purej/TestOp");
     }
 
     static void testBat(int index)
     {
-       // String classPath0 = "";
         String baseDir = FileUtil.getCurrentPath()+"\\samples\\";
         File file = new File(baseDir);
 

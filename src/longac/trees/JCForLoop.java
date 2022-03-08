@@ -12,7 +12,7 @@ public class JCForLoop extends LoopStatement
     /** 条件表达式 */
     public JCExpression cond;
     /** 更新语句 */
-    public JCExpression step;
+    public JCStatement step;
     /** 函数体 */
     public JCStatement body;
 
@@ -21,7 +21,7 @@ public class JCForLoop extends LoopStatement
 
     }
 
-    public JCForLoop(JCStatement init, JCExpression cond, JCExpression step, JCStatement body )
+    public JCForLoop(JCStatement init, JCExpression cond, JCStatement step, JCStatement body )
     {
         this.init = init;
         this.cond = cond;

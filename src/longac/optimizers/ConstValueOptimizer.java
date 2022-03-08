@@ -224,7 +224,7 @@ public class ConstValueOptimizer extends TreeTranslator<ConstValueOptimizerConte
         //if(tree.step!=null)
         //    tree.step =translates(tree.step,arg) ;
         if(tree.step!=null)
-            tree.step = (JCExpression) tree.step.translate(this,arg);
+            tree.step = (JCStatement) tree.step.translate(this,arg);
         if(tree.body!=null)
             tree.body = (JCStatement)tree.body.translate (this,arg);
         return tree;

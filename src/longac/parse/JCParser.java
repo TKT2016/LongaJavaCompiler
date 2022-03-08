@@ -109,11 +109,11 @@ public class JCParser {
         if (!same) {
             String msg;
             if (tk.name != null)
-                msg = "需要 '" + tk.name + "' ";
+                msg = "need '" + tk.name + "' ";
             else if (tk == TokenKind.IDENTIFIER)
-                msg ="需要<标识符>";
+                msg ="need <identifier>";
             else
-                msg ="需要<" + tk + ">";
+                msg ="need <" + tk + ">";
             log.error(token.pos, token.line,msg);
         }
         return same;

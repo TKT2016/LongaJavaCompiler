@@ -16,8 +16,13 @@ public class StmtTreeParser extends ParserBase{
         this.exprParser = jcparser.exprParser;
     }
 
+    protected JCStatement parseStatement( )
+    {
+        return parseStatement(true);
+    }
+
     /** 分析语句 ,从简单到复杂排列*/
-    protected JCStatement parseStatement()
+    protected JCStatement parseStatement(boolean checkSemi)
     {
         switch (jcparser.tkind) {
             case BREAK:
@@ -38,14 +43,14 @@ public class StmtTreeParser extends ParserBase{
             case BOOLEAN:
             case THIS:
            // case IDENTIFIER:
-                return expressionStatement();//分析其它语句
+                return expressionStatement(checkSemi);//分析其它语句
             case SEMI:
                 jcparser.nextToken();
-                return parseStatement();
+                return parseStatement(checkSemi);
             case ELSE:
                 log.error( jcparser.token.pos,jcparser.token.line,"ELSE缺少IF" );
                 jcparser.nextToken();
-                return parseStatement();
+                return parseStatement(checkSemi);
            case RBRACE:
                log.error( jcparser.token.pos,jcparser.token.line,"右大括号没有匹配的左大括号" );
                jcparser.nextToken();
@@ -61,9 +66,8 @@ public class StmtTreeParser extends ParserBase{
                 }
                 else if(jcparser.tkind== IDENTIFIER)
                 {
-                    return expressionStatement();//分析其它语句
+                    return expressionStatement(checkSemi);//分析其它语句
                 }
-
                 log.error( jcparser.token.pos,jcparser.token.line,"非法的表达式语句成分" );
                 jcparser.nextToken();
                 return parseStatement();
@@ -165,11 +169,11 @@ public class StmtTreeParser extends ParserBase{
             jcparser.nextToken();
         /** 分项条件表达式，也是以';'结尾 */
         if(jcparser.tkind!=SEMI)
-            jcForLoop.cond =  exprParser.parseExpression();
+            jcForLoop.cond = exprParser.parseExpression();
         jcparser.accept(SEMI);
         /** 分项更新语句,是以')'结尾 */
         if( jcparser.tkind != RPAREN)
-            jcForLoop.step = exprParser.parseExpression();
+            jcForLoop.step =  parseStatement(false);//exprParser.parseExpression();
     }
 
     /** 分析while循环
@@ -206,7 +210,7 @@ public class StmtTreeParser extends ParserBase{
      *  expression = expression ';'
      *  expression NAME ';'
      * */
-    JCStatement expressionStatement()
+    JCStatement expressionStatement(boolean checkSemi)
     {
         //if(jcparser.token.line==16)
         //    Debuger.outln("215 :"+jcparser.token);
@@ -223,7 +227,8 @@ public class StmtTreeParser extends ParserBase{
             /* 当前token是标识符分析变量声明表达式  */
             expression = exprParser.variableDecl(expression,posToken);
         }
-        jcparser.accept(SEMI); //验证分号
+        if(checkSemi)
+            jcparser.accept(SEMI); //验证分号
         /* 检测表达式是否属于语句中正确类型 */
         if (expression instanceof JCAssign
                 || expression instanceof JCMethodInvocation

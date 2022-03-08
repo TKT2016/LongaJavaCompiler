@@ -130,7 +130,7 @@ class TreeMaker
     /** 创建JCForLoop循环 */
     public JCForLoop ForLoop(JCStatement init,
                              JCExpression cond,
-                             JCExpression step,
+                             JCStatement step,
                              JCStatement body)
     {
         JCForLoop tree = new JCForLoop(init, cond, step, body);
