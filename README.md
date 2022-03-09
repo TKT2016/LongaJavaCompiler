@@ -59,7 +59,7 @@ void loginWindow()
  }
 ```
 The code screenshots show here
-![](resources/LoginWindow.png)
+![](screenshots/LoginWindow.png)
 
 **Note : Code is Java , not SQL.**
 
@@ -126,7 +126,7 @@ HelloWorld.lga 最简单的HelloWorld,和java很接近
 GUIDSLTest.lga 演示Longa编写java swing图形
 SQLDomainTest.lga 演示怎样用Longa连接mysql,删除创建查询表,修改正确的数据库连接信息可以实际运行
 
-![](resources/SQLDemo.png)
+![](screenshots/SQLDemo.png)
 
 删除创建查询表
 ```java
