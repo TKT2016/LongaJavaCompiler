@@ -37,20 +37,20 @@ public class TinyEditor extends JFrame implements ActionListener,DocumentListene
     //系统剪贴板
     Toolkit toolkit = Toolkit.getDefaultToolkit();
     Clipboard clipBoard = toolkit.getSystemClipboard();
-    //创建撤销操作管理器(与撤销操作有关)
-    protected UndoManager undo = new UndoManager();
+
+    protected UndoManager undo = new UndoManager(); //创建撤销操作管理器(与撤销操作有关)
     protected UndoableEditListener undoHandler = new UndoHandler();
-    //其他变量
+
     boolean isNewFile = true;//是否新文件(未保存过的)
     File currentFile;//当前文件名
 
     public TinyEditor() {
         super("Longa Editor");
 
-        btnOpen = new JButton("Open Longa Source");
+        btnOpen = new JButton("Open ");
         btnOpen.addActionListener(this);
 
-        btnRun2 = new JButton("Compile Run Longa ");
+        btnRun2 = new JButton("Compile Run  ");
         btnRun2.addActionListener(this);
 
         tb.addSeparator();
@@ -142,7 +142,7 @@ public class TinyEditor extends JFrame implements ActionListener,DocumentListene
         editMenu_SelectAll.addActionListener(this);
 
         helpMenu = new JMenu("Help(H)");
-        helpMenu.setMnemonic('H');//设置快捷键ALT+H
+        helpMenu.setMnemonic('H');
 
         helpMenu_About = new JMenuItem("About(A)");
         helpMenu_About.addActionListener(this);
@@ -183,12 +183,12 @@ public class TinyEditor extends JFrame implements ActionListener,DocumentListene
         editArea.getDocument().addDocumentListener(this);
 
         popupMenu = new JPopupMenu();
-        menu_Undo = new JMenuItem("撤销(U)");
-        menu_Cut = new JMenuItem("剪切(T)");
-        menu_Copy = new JMenuItem("复制(C)");
-        menu_Paste = new JMenuItem("粘帖(P)");
-        menu_Delete = new JMenuItem("删除(D)");
-        menu_SelectAll = new JMenuItem("全选(A)");
+        menu_Undo = new JMenuItem("Redo(U)");
+        menu_Cut = new JMenuItem("Cut(T)");
+        menu_Copy = new JMenuItem("Copy(C)");
+        menu_Paste = new JMenuItem("Paste(P)");
+        menu_Delete = new JMenuItem("Delete(D)");
+        menu_SelectAll = new JMenuItem("Select All(A)");
 
         menu_Undo.setEnabled(false);
 
@@ -283,18 +283,18 @@ public class TinyEditor extends JFrame implements ActionListener,DocumentListene
         String str = null;
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setApproveButtonText("确定");
-        fileChooser.setDialogTitle("另存为");
+        fileChooser.setApproveButtonText("Yes");
+        fileChooser.setDialogTitle("Save As");
         int result = fileChooser.showSaveDialog(this);
         if (result == JFileChooser.CANCEL_OPTION) {
-            statusLabel.setText("您没有保存文件");
+            statusLabel.setText("You not save file");
             return;
         }
 
         File saveFileName = fileChooser.getSelectedFile();
 
         if (saveFileName == null || saveFileName.getName().equals("")) {
-            JOptionPane.showMessageDialog(this, "不合法的文件名", "不合法的文件名", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Invalid filename", "Invalid filename", JOptionPane.ERROR_MESSAGE);
         }
         else {
             try {
@@ -303,8 +303,7 @@ public class TinyEditor extends JFrame implements ActionListener,DocumentListene
                 isNewFile = false;
                 currentFile = saveFileName;
                 setEditorTitle(saveFileName.getName());
-                statusLabel.setText("当前打开文件:" + saveFileName.getAbsoluteFile());
-                //isSave=true;
+                statusLabel.setText("Currrent Opened File :" + saveFileName.getAbsoluteFile());
             } catch (IOException ioException) {
             }
         }
@@ -321,12 +320,11 @@ public class TinyEditor extends JFrame implements ActionListener,DocumentListene
             FileUtil.saveTextContent(file,editArea.getText());
             return true;
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "保存文件发生异常:"+ex.getMessage(), "保存文件", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Save Exception:"+ex.getMessage(), "Save File", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }
 
-    //关闭窗口时调用
     public void exitWindowChoose() {
         editArea.requestFocus();
         System.exit(0);
@@ -335,12 +333,11 @@ public class TinyEditor extends JFrame implements ActionListener,DocumentListene
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == fileMenu_New) {
             editArea.requestFocus();
-           // String currentValue = editArea.getText();
                 editArea.replaceRange("", 0, editArea.getText().length());
-                statusLabel.setText(" 新建文件");
-                setEditorTitle("无标题");
+                statusLabel.setText(" New File");
+                setEditorTitle("untitled");
                 isNewFile = true;
-                undo.discardAllEdits();//撤消所有的"撤消"操作
+                undo.discardAllEdits();
                 editMenu_Undo.setEnabled(false);
         }
         else if (e.getSource() == btnRun2) {
@@ -366,7 +363,7 @@ public class TinyEditor extends JFrame implements ActionListener,DocumentListene
                 }
                 File saveFileName = fileChooser.getSelectedFile();
                 if (saveFileName == null || saveFileName.getName().equals("")) {
-                    JOptionPane.showMessageDialog(this, "不合法的文件名", "不合法的文件名", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Invalid file name", "Invalid file name", JOptionPane.ERROR_MESSAGE);
                 }
                 else {
                         saveFile(saveFileName);
@@ -374,7 +371,7 @@ public class TinyEditor extends JFrame implements ActionListener,DocumentListene
                         currentFile = saveFileName;
                         //oldValue = editArea.getText();
                         setEditorTitle(saveFileName.getName());
-                        statusLabel.setText("当前打开文件：" + saveFileName.getAbsoluteFile());
+                        statusLabel.setText("Open file ：" + saveFileName.getAbsoluteFile());
                 }
             }
             else {
@@ -385,7 +382,7 @@ public class TinyEditor extends JFrame implements ActionListener,DocumentListene
             saveFileAs();
         }
         else if (e.getSource() == fileMenu_Exit) {
-            int exitChoose = JOptionPane.showConfirmDialog(this, "确定要退出吗?", "退出提示", JOptionPane.OK_CANCEL_OPTION);
+            int exitChoose = JOptionPane.showConfirmDialog(this, "Are you sure quit ?", "Quit", JOptionPane.OK_CANCEL_OPTION);
             if (exitChoose == JOptionPane.OK_OPTION) {
                 System.exit(0);
             }
@@ -437,7 +434,7 @@ public class TinyEditor extends JFrame implements ActionListener,DocumentListene
         else if (e.getSource() == editMenu_Delete || e.getSource() == menu_Delete) {
             editArea.requestFocus();
             editArea.replaceRange("", editArea.getSelectionStart(), editArea.getSelectionEnd());
-            checkMenuItemEnabled(); //设置剪切、复制、粘贴、删除等功能的可用性
+            checkMenuItemEnabled();
         }
         else if (e.getSource() == editMenu_SelectAll || e.getSource() == menu_SelectAll) {
             editArea.selectAll();
@@ -445,10 +442,10 @@ public class TinyEditor extends JFrame implements ActionListener,DocumentListene
         else if (e.getSource() == helpMenu_About) {
             editArea.requestFocus();
             JOptionPane.showMessageDialog(this,
-                    "Longa 语言编译运行简单工具\n" +
-                            " 编写者：公悟盐 \n" +
-                            " E-mail：gongwuyan@outlook.com    \n" ,
-                    "Longa 语言编译运行简单工具", JOptionPane.INFORMATION_MESSAGE);
+                    "Longa Java Compiler\n" +
+                            " Author：gongwuyan \n" +
+                            " E-mail：gongwuyan@outlook.com OR ss9d@outlook.com   \n" ,
+                    "Longa simple IDE", JOptionPane.INFORMATION_MESSAGE);
         }
     }
     JFileChooser fileChooser ;
@@ -468,15 +465,15 @@ public class TinyEditor extends JFrame implements ActionListener,DocumentListene
         else
             fileChooser.setCurrentDirectory(new File("./samples"));*/
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setDialogTitle("打开文件");
+        fileChooser.setDialogTitle("Open File");
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.CANCEL_OPTION) {
-            statusLabel.setText("您没有选择任何文件");
+            statusLabel.setText("You not select any file");
             return;
         }
         File fileName = fileChooser.getSelectedFile();
         if (fileName == null || fileName.getName().equals("")) {
-            JOptionPane.showMessageDialog(this, "不合法的文件名", "不合法的文件名", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Invalid filename", "Invalid filename", JOptionPane.ERROR_MESSAGE);
         }
         else {
             try {
