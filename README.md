@@ -65,7 +65,7 @@ The code screenshots show here
 
 
 Longa is long expresssion.You can write Java code just like SQL script ,
-So it's very cool and very important.  
+So it's very cool and very important.  (It's not LINQ)
 
 Welcome download source code and run it.This Project write in pure JDK1.8 . it's easy to 
 compile  and execute it.
