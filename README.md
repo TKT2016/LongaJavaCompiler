@@ -1,6 +1,7 @@
 # LongaJavaCompiler
-A future of Java Compiler  compiled it to JVM bytecode , 
+A future of Java Compiler compiled it to JVM bytecode , 
 you can write Java code  like SQL with Longa expression .  
+If you have any suggestions , you cans send email to gongwuyan@outlook.com .
 
 Do you like this Java Code
 ```java
@@ -19,8 +20,8 @@ drop table "student" ifExists;
 and do create table 
 ```java
 create table "course" [
-column "id" dataType integer 11 NotNULL  ,
-column "name"  dataType CHAR 8  NotNULL
+    column "id" dataType integer 11 NotNULL  ,
+    column "name"  dataType CHAR 8  NotNULL
 ];
 ```
 and do insert table
@@ -58,7 +59,7 @@ void loginWindow()
         System.out.println(jframe.getTitle());
  }
 ```
-The code screenshots show here
+This code screenshots show here
 ![](screenshots/LoginWindow.png)
 
 **Note : Code is Java , not SQL.**
